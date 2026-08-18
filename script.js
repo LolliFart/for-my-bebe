@@ -1,231 +1,172 @@
-// =========================================================
-    // EASY CUSTOMIZATION — EDIT THESE 3 LINES ONLY
-    // =========================================================
-    const girlfriendName = "Bebe";
-    const boyfriendName = "Your Bebeee Gelo";
-    const personalMessage =
-      "Bebeee, jokes aside, gusto ko talagang magsorry sa’yo nang buong puso. Alam kong hindi sapat yung simpleng “sorry” sa lahat ng pagkakataong napaiyak kita, nasaktan kita, at pinagtampo kita. Mas masakit isipin na ako, na dapat isa sa mga taong nagbibigay sa’yo ng comfort at saya, minsan ako pa yung dahilan kung bakit ka umiiyak. I’m really sorry, bebe. Hindi mo deserve na paulit-ulit kang masaktan dahil sa mga ginagawa o nasasabi ko. Ayokong masanay tayo na masasaktan kita tapos magsosorry lang ako pagkatapos. I want to be better for you—not just through words, but through the way I treat you, listen to you, and consider your feelings. Hindi ko ine-expect na mawala agad lahat ng tampo at sakit dahil lang ginawa ko itong website. Ginawa ko lang ito kasi gusto kitang mapangiti kahit kaunti, pero higit sa lahat, gusto kong malaman mo na mahalaga sa akin yung nararamdaman mo. Thank you for still loving me, being patient with me, and staying even during the times when I make things difficult. I’m sorry for the tears I caused, bebe. I’ll do my best to give you more reasons to smile than reasons to cry. Mahal na mahal kita. And I don’t just want to keep saying that, cause I want to make you feel it.     — Your Bebe Gelo ❤️";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff7fa8" />
+  <title>Sorry Bebeee 🥺❤️</title>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="Regina Song - the cutest pair (Official MV).mp3" type="audio/mpeg">
+</audio>
 
-    // =========================================================
+    <link rel="stylesheet" href="style.css">
 
-    document.getElementById("girlfriendName").textContent = girlfriendName;
-    document.getElementById("boyfriendName").textContent = boyfriendName;
-    document.getElementById("personalMessage").textContent = personalMessage;
-    document.title = `Sorry ${girlfriendName} 🥺❤️`;
+</head>
 
-    const stillMadBtn = document.getElementById("stillMadBtn");
-    const forgiveBtn = document.getElementById("forgiveBtn");
-    const buttonZone = document.getElementById("buttonZone");
-    const runawayHint = document.getElementById("runawayHint");
-    const bgMusic = document.getElementById("bgMusic");
-    bgMusic.volume = 0.5;
+<body>
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+  <div class="blob three"></div>
 
-    let escapeCount = 0;
-    forgiveBtn.addEventListener("click", () => {
+  <button id="musicToggle" class="music-toggle">🎵 Music</button>
 
-  // Start background music
-  if (bgMusic.paused) {
-    bgMusic.play().catch(error => {
-      console.log("Music could not play:", error);
-    });
-  }
+  <main class="wrap">
+    <section class="hero">
+      <div class="paper">
+        <div class="sticker s1">🌷</div>
+        <div class="sticker s2">💌</div>
+        <div class="sticker s3">🎀</div>
 
-  burstHearts(20);
-  confetti(55);
+        <div class="badge">🚨 Emergency Tampo Protocol for My Bebe</div>
 
-  document.getElementById("application").classList.add("show");
-  document.getElementById("meterSection").classList.add("show");
+        <h1>
+          Hi <span id="girlfriendName" class="highlight">Bebe</span>…
+          <br>galit ka pa ba sakin? <span class="wiggle">🥺</span>
+        </h1>
 
-  setTimeout(() => {
-    document.getElementById("application").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }, 180);
-});
-    function moveStillMadButton(){
-      escapeCount++;
-      runawayHint.style.display = "block";
+        <div class="doodle-line"></div>
 
-      const zone = buttonZone.getBoundingClientRect();
-      const btn = stillMadBtn.getBoundingClientRect();
+        <p class="sub">
+          I prepared a very advanced, scientifically questionable website
+          para ma-check kung may chance pa akong mabuhay today. 😭
+        </p>
 
-      const maxX = Math.max(0, zone.width - btn.width);
-      const maxY = Math.max(0, zone.height - btn.height);
+        <div class="polaroid-row">
+          <div class="polaroid">
+            <div class="emoji">🥺</div>
+            <span>me right now</span>
+          </div>
+          <div class="polaroid">
+            <div class="emoji">😤</div>
+            <span>you right now</span>
+          </div>
+          <div class="polaroid">
+            <div class="emoji">🥰</div>
+            <span>hopefully us later</span>
+          </div>
+        </div>
 
-      stillMadBtn.style.position = "absolute";
-      stillMadBtn.style.left = Math.random() * maxX + "px";
-      stillMadBtn.style.top = Math.random() * maxY + "px";
+        <div class="buttons" id="buttonZone">
+          <button class="yes" id="forgiveBtn">Hindi na ❤️</button>
+          <button class="no" id="stillMadBtn">Oo 😤</button>
+        </div>
 
-      const phrases = [
-        "Oo 😤",
-        "Sure ka? 😭",
-        "Bebe pls 🥺",
-        "Hindi valid 😌",
-        "Try again 😂",
-        "Bawal yan ❤️"
-      ];
+        <p class="mini-note" id="runawayHint">
+          Aba, pinipilit mo talaga pindutin? 😭
+        </p>
+      </div>
+    </section>
 
-      stillMadBtn.textContent = phrases[Math.min(escapeCount, phrases.length - 1)];
-    }
+    <section class="section" id="application">
+      <div class="paper" style="margin:auto;transform:rotate(.2deg)">
+        <div class="sticker s1">🧸</div>
+        <div class="badge">📄 Official Sorry Application</div>
 
-    ["mouseenter","touchstart","pointerdown"].forEach(evt=>{
-      stillMadBtn.addEventListener(evt,(e)=>{
-        if(evt !== "mouseenter") e.preventDefault();
-        moveStillMadButton();
-      },{passive:false});
-    });
+        <h2 style="margin-top:16px">Application for Forgiveness</h2>
 
-    forgiveBtn.addEventListener("click",()=>{
-      burstHearts(20);
-      confetti(55);
+        <p><strong>Applicant:</strong> <span id="boyfriendName">Your Bebeee Gelo</span></p>
+        <p><strong>Reason:</strong> Nagtatampo ang pinakamagandang Bebeee sa buong mundo.</p>
+        <p><strong>Defense:</strong> Wala po. Guilty po ako. 🧎‍♂️</p>
 
-      document.getElementById("application").classList.add("show");
-      document.getElementById("meterSection").classList.add("show");
+        <h3 style="margin-top:27px">Pick your compensation package:</h3>
 
-      setTimeout(()=>{
-        document.getElementById("application").scrollIntoView({
-          behavior:"smooth",
-          block:"start"
-        });
-      },180);
-    });
+        <div class="choices" id="choices">
+          <div class="choice">🍦 Libre kita ice cream</div>
+          <div class="choice">🍜 Libre kita food</div>
+          <div class="choice">🤗 Unlimited hugs</div>
+          <div class="choice">💋 100 kisses</div>
+          <div class="choice">👸 Princess treatment for 24 hours</div>
+          <div class="choice">☠️ Bahala ka na sakin</div>
+        </div>
 
-    const choices = [...document.querySelectorAll(".choice")];
-    const receipt = document.getElementById("receipt");
-    const selectedChoice = document.getElementById("selectedChoice");
+        <div class="receipt" id="receipt">
+          <strong>✅ Compensation selected:</strong>
+          <div id="selectedChoice" style="margin-top:7px"></div>
+          <div style="margin-top:8px;font-size:.9rem;color:#7c6871">
+            This agreement is legally binding according to Bebe Law, Article 143.
+          </div>
+        </div>
+      </div>
+    </section>
 
-    choices.forEach(choice=>{
-      choice.addEventListener("click",()=>{
-        choices.forEach(c=>c.classList.remove("selected"));
-        choice.classList.add("selected");
-        selectedChoice.textContent = choice.textContent;
-        receipt.classList.add("show");
-        burstHearts(8);
-      });
-    });
+    <section class="section" id="meterSection">
+      <div class="paper" style="margin:auto;transform:rotate(-.15deg)">
+        <div class="sticker s2">💞</div>
+        <div class="badge">📉 Live Relationship Analytics</div>
 
-    let tampo = 100;
+        <h2 style="margin-top:16px">Current Tampo Level</h2>
+        <p class="sub">Press the button until all tampo has been professionally removed.</p>
 
-    const fill = document.getElementById("meterFill");
-    const meterText = document.getElementById("meterText");
-    const meterEmoji = document.getElementById("meterEmoji");
-    const reduceBtn = document.getElementById("reduceBtn");
-    const finalMessage = document.getElementById("finalMessage");
+        <div class="meter">
+          <div class="fill" id="meterFill"></div>
+        </div>
 
-    const states = {
-      100:"😡",
-      80:"😠",
-      60:"😒",
-      40:"😑",
-      20:"🙂",
-      0:"🥰"
-    };
+        <div class="meter-row">
+          <span id="meterEmoji">😡</span>
+          <span id="meterText">100% Tampo</span>
+        </div>
 
-    reduceBtn.addEventListener("click",()=>{
-      tampo = Math.max(0,tampo-20);
+        <button class="yes" id="reduceBtn" style="width:100%">
+          Reduce Tampo ✨
+        </button>
 
-      fill.style.width = tampo + "%";
-      meterText.textContent =
-        tampo === 0 ? "0% Tampo — SAFE NA 😭❤️" : `${tampo}% Tampo`;
-      meterEmoji.textContent = states[tampo] || "🥺";
-      meterEmoji.style.transform = "scale(1.25)";
-      setTimeout(()=>meterEmoji.style.transform="scale(1)",160);
+        <div class="final" id="finalMessage">
+          <div style="font-size:3.2rem">🥰🎉❤️</div>
+          <h2 style="margin-top:8px">Tampo successfully removed!</h2>
 
-      if(tampo === 0){
-        reduceBtn.disabled = true;
-        reduceBtn.textContent = "Tampo Removed ✅";
-        finalMessage.classList.add("show");
-        confetti(95);
-        burstHearts(30);
+          <p>
+            Congratulations! Your Bebe has survived and has been granted
+            conditional forgiveness.
+          </p>
 
-        setTimeout(()=>{
-          finalMessage.scrollIntoView({
-            behavior:"smooth",
-            block:"center"
-          });
-        },250);
-      }else{
-        burstHearts(5);
-      }
-    });
+          <div class="love-letter">
+            <strong>Dear Vina,</strong><br><br>
+            <span id="personalMessage">
+              Bebeee, jokes aside, gusto ko talagang magsorry sa’yo nang buong puso.
 
-    document.getElementById("loveBtn").addEventListener("click",()=>{
-      confetti(130);
-      burstHearts(45);
-      document.getElementById("loveBtn").textContent = "YEHEYYYY 😭❤️❤️❤️";
-    });
+Alam kong hindi sapat yung simpleng “sorry” sa lahat ng pagkakataong napaiyak kita, nasaktan kita, at pinagtampo kita. Mas masakit isipin na ako, na dapat isa sa mga taong nagbibigay sa’yo ng comfort at saya, minsan ako pa yung dahilan kung bakit ka umiiyak.
 
-    function burstHearts(count=12){
-      const hearts=["❤️","💗","💖","💕","💘","🌷","✨"];
-      for(let i=0;i<count;i++){
-        const el=document.createElement("div");
-        el.className="heart";
-        el.textContent=hearts[Math.floor(Math.random()*hearts.length)];
-        el.style.left=Math.random()*100+"vw";
-        el.style.fontSize=(16+Math.random()*20)+"px";
-        el.style.animationDuration=(2.3+Math.random()*2.4)+"s";
-        el.style.opacity=.65+Math.random()*.35;
-        document.body.appendChild(el);
-        setTimeout(()=>el.remove(),5200);
-      }
-    }
+I’m really sorry, bebe. Hindi mo deserve na paulit-ulit kang masaktan dahil sa mga ginagawa o nasasabi ko. Ayokong masanay tayo na masasaktan kita tapos magsosorry lang ako pagkatapos. I want to be better for you—not just through words, but through the way I treat you, listen to you, and consider your feelings.
 
-    function confetti(count=60){
-      const palette=["#ff6f9f","#ffd166","#7bdff2","#b2f7ef","#cdb4db","#ffffff"];
-      for(let i=0;i<count;i++){
-        const el=document.createElement("span");
-        el.className="confetti";
-        el.style.left=Math.random()*100+"vw";
-        el.style.background=palette[Math.floor(Math.random()*palette.length)];
-        el.style.animationDuration=(2.3+Math.random()*2.7)+"s";
-        el.style.animationDelay=(Math.random()*.6)+"s";
-        document.body.appendChild(el);
-        setTimeout(()=>el.remove(),6000);
-      }
-    }
+Hindi ko ine-expect na mawala agad lahat ng tampo at sakit dahil lang ginawa ko itong website. Ginawa ko lang ito kasi gusto kitang mapangiti kahit kaunti, pero higit sa lahat, gusto kong malaman mo na mahalaga sa akin yung nararamdaman mo.
 
-    setInterval(()=>{
-      if(document.hidden) return;
+Thank you for still loving me, being patient with me, and staying even during the times when I make things difficult. I’m sorry for the tears I caused, bebe. I’ll do my best to give you more reasons to smile than reasons to cry.
 
-      const el=document.createElement("div");
-      el.className="heart";
-      el.textContent=Math.random()>.45?"💗":"✨";
-      el.style.left=Math.random()*100+"vw";
-      el.style.fontSize=(12+Math.random()*11)+"px";
-      el.style.animationDuration=(5+Math.random()*4)+"s";
-      el.style.opacity=.35;
-      document.body.appendChild(el);
+Mahal na mahal kita. And I don’t just want to keep saying that—I want to make you feel it.
 
-      setTimeout(()=>el.remove(),9500);
-    },1350);
+— Your Bebe Gelo ❤️
 
-const bgMusic = document.getElementById("bgMusic");
+            </span>
+          </div>
 
-bgMusic.volume = 0.5;
+          <button class="yes" id="loveBtn" style="margin-top:20px">
+            I love you too ❤️
+          </button>
 
-// Try autoplay first
-window.addEventListener("load", () => {
-    bgMusic.play().catch(() => {
-        console.log("Mobile browser blocked autoplay.");
-    });
-});
+          <div class="terms">
+            Terms & Conditions:<br>
+            Bebe is always right.<br>
+            Bebe mo may appeal, but appeal will automatically be rejected. 😂
+          </div>
+        </div>
+      </div>
+    </section>
 
-// Start music automatically after first user interaction
-function startMusic() {
-    if (bgMusic.paused) {
-        bgMusic.play()
-            .then(() => {
-                console.log("Music started ❤️");
-            })
-            .catch(error => {
-                console.log("Could not play music:", error);
-            });
-    }
+    <div class="footer">
+      Made with panic, love, and questionable coding decisions. 💗
+    </div>
+  </main>
 
-    document.removeEventListener("click", startMusic);
-    document.removeEventListener("touchend", startMusic);
-}
-
-document.addEventListener("click", startMusic);
-document.addEventListener("touchend", startMusic);
+    <script src="script.js"></script>
+</body>
+</html>
