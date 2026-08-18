@@ -179,84 +179,127 @@
 
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
+const musicStatus = document.getElementById("musicStatus");
 
-bgMusic.volume = 0.5;
+// Default settings
+bgMusic.volume = 0.8;
+bgMusic.muted = false;
 
-// Log audio element status
+function updateStatus(text){
+  if(musicStatus) musicStatus.textContent = text;
+  if(musicToggle) musicToggle.setAttribute('aria-pressed', (!bgMusic.paused).toString());
+}
+
+function logAudioState(){
+  console.log("Audio state -> muted:", bgMusic.muted, "volume:", bgMusic.volume, "paused:", bgMusic.paused, "currentTime:", bgMusic.currentTime, "duration:", bgMusic.duration, "readyState:", bgMusic.readyState);
+}
+
+// Debug info
 console.log("Audio element found:", !!bgMusic);
 console.log("Audio source:", bgMusic.querySelector("source")?.src);
 
-// Check if audio can play
 bgMusic.addEventListener("canplay", () => {
-    console.log("Audio can play ❤️");
+  console.log("Audio can play ❤️");
+  logAudioState();
+});
+
+bgMusic.addEventListener("playing", () => {
+  console.log("Event: playing");
+  updateStatus("🎵 Playing");
+  logAudioState();
+});
+
+bgMusic.addEventListener("pause", () => {
+  console.log("Event: pause");
+  updateStatus("🎵 Paused");
+  logAudioState();
+});
+
+bgMusic.addEventListener("volumechange", () => {
+  console.log("Event: volumechange ->", bgMusic.volume, "muted:", bgMusic.muted);
+  logAudioState();
 });
 
 bgMusic.addEventListener("error", (e) => {
-    console.error("Audio error:", e, bgMusic.error);
-    if (bgMusic.error) {
-        const errorCodes = {
-            1: "MEDIA_ERR_ABORTED",
-            2: "MEDIA_ERR_NETWORK",
-            3: "MEDIA_ERR_DECODE",
-            4: "MEDIA_ERR_SRC_NOT_SUPPORTED"
-        };
-        console.error("Error type:", errorCodes[bgMusic.error.code]);
-    }
+  console.error("Audio error event:", e, bgMusic.error);
+  if (bgMusic.error) {
+    const errorCodes = {
+      1: "MEDIA_ERR_ABORTED",
+      2: "MEDIA_ERR_NETWORK",
+      3: "MEDIA_ERR_DECODE",
+      4: "MEDIA_ERR_SRC_NOT_SUPPORTED"
+    };
+    console.error("Error type:", errorCodes[bgMusic.error.code]);
+    updateStatus("🎵 Error: " + (errorCodes[bgMusic.error.code] || "unknown"));
+  }
 });
 
 // Toggle music on button click
-musicToggle.addEventListener("click", (e) => {
+if(musicToggle){
+  musicToggle.addEventListener("click", (e) => {
     e.stopPropagation();
     console.log("Music button clicked. Paused:", bgMusic.paused);
+
+    // Ensure unmuted before trying to play
+    bgMusic.muted = false;
+
     if (bgMusic.paused) {
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    musicToggle.textContent = "🎵 Music ON";
-                    console.log("Music started ❤️");
-                })
-                .catch(error => {
-                    console.error("Play error:", error);
-                    musicToggle.textContent = "🎵 Error playing";
-                });
-        }
+      const playPromise = bgMusic.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            musicToggle.textContent = "🎵 Music ON";
+            updateStatus("🎵 Playing");
+            console.log("Music started ❤️");
+          })
+          .catch(error => {
+            console.error("Play error:", error);
+            musicToggle.textContent = "🎵 Error playing";
+            updateStatus("🎵 Error playing");
+          });
+      }
     } else {
-        bgMusic.pause();
-        musicToggle.textContent = "🎵 Music OFF";
+      bgMusic.pause();
+      musicToggle.textContent = "🎵 Music OFF";
+      updateStatus("🎵 Paused");
     }
-});
+  });
+}
 
 // Try autoplay first
 window.addEventListener("load", () => {
-    console.log("Page loaded. Attempting autoplay...");
-    const playPromise = bgMusic.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(() => {
-            console.log("Autoplay blocked - user interaction required");
-        });
-    }
+  console.log("Page loaded. Attempting autoplay...");
+  const playPromise = bgMusic.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      console.log("Autoplay blocked - user interaction required");
+      updateStatus("🎵 Tap to play");
+    });
+  }
 });
 
 // Start music automatically after first user interaction
 function startMusic() {
-    console.log("User interacted. Starting music...");
-    if (bgMusic.paused) {
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    musicToggle.textContent = "🎵 Music ON";
-                    console.log("Music started ❤️");
-                })
-                .catch(error => {
-                    console.error("Could not play music:", error);
-                });
-        }
+  console.log("User interacted. Starting music...");
+  bgMusic.muted = false;
+  if (bgMusic.paused) {
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          musicToggle.textContent = "🎵 Music ON";
+          updateStatus("🎵 Playing");
+          console.log("Music started ❤️");
+        })
+        .catch(error => {
+          console.error("Could not play music:", error);
+          updateStatus("🎵 Error playing");
+        });
     }
+  }
 
-    document.removeEventListener("click", startMusic);
-    document.removeEventListener("touchend", startMusic);
+  document.removeEventListener("click", startMusic);
+  document.removeEventListener("touchend", startMusic);
 }
 
 document.addEventListener("click", startMusic);
