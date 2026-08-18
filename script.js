@@ -17,9 +17,32 @@
     const forgiveBtn = document.getElementById("forgiveBtn");
     const buttonZone = document.getElementById("buttonZone");
     const runawayHint = document.getElementById("runawayHint");
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.5;
 
     let escapeCount = 0;
+    forgiveBtn.addEventListener("click", () => {
 
+  // Start background music
+  if (bgMusic.paused) {
+    bgMusic.play().catch(error => {
+      console.log("Music could not play:", error);
+    });
+  }
+
+  burstHearts(20);
+  confetti(55);
+
+  document.getElementById("application").classList.add("show");
+  document.getElementById("meterSection").classList.add("show");
+
+  setTimeout(() => {
+    document.getElementById("application").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 180);
+});
     function moveStillMadButton(){
       escapeCount++;
       runawayHint.style.display = "block";
