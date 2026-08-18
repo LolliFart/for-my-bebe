@@ -254,6 +254,24 @@
       }
     }
 
+    .music-status{
+      position:fixed;
+      top:18px;
+      right:120px;
+      z-index:999;
+      color:var(--ink);
+      background:rgba(255,255,255,.9);
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow:0 8px 20px rgba(0,0,0,.06);
+      font-weight:700;
+      font-size:.9rem;
+    }
+
+    @media (max-width:480px){
+      .music-status{right:100px; top:12px; font-size:.85rem}
+    }
+
     .yes{
       color:#fff;
       background:linear-gradient(135deg,var(--pink-dark),var(--rose));
