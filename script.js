@@ -182,18 +182,45 @@ const musicToggle = document.getElementById("musicToggle");
 
 bgMusic.volume = 0.5;
 
+// Log audio element status
+console.log("Audio element found:", !!bgMusic);
+console.log("Audio source:", bgMusic.querySelector("source")?.src);
+
+// Check if audio can play
+bgMusic.addEventListener("canplay", () => {
+    console.log("Audio can play ❤️");
+});
+
+bgMusic.addEventListener("error", (e) => {
+    console.error("Audio error:", e, bgMusic.error);
+    if (bgMusic.error) {
+        const errorCodes = {
+            1: "MEDIA_ERR_ABORTED",
+            2: "MEDIA_ERR_NETWORK",
+            3: "MEDIA_ERR_DECODE",
+            4: "MEDIA_ERR_SRC_NOT_SUPPORTED"
+        };
+        console.error("Error type:", errorCodes[bgMusic.error.code]);
+    }
+});
+
 // Toggle music on button click
 musicToggle.addEventListener("click", (e) => {
     e.stopPropagation();
+    console.log("Music button clicked. Paused:", bgMusic.paused);
     if (bgMusic.paused) {
-        bgMusic.play()
-            .then(() => {
-                musicToggle.textContent = "🎵 Music ON";
-                console.log("Music started ❤️");
-            })
-            .catch(error => {
-                console.log("Could not play music:", error);
-            });
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    musicToggle.textContent = "🎵 Music ON";
+                    console.log("Music started ❤️");
+                })
+                .catch(error => {
+                    console.error("Play error:", error);
+                    musicToggle.textContent = "🎵 Error playing";
+                });
+        }
     } else {
         bgMusic.pause();
         musicToggle.textContent = "🎵 Music OFF";
@@ -202,22 +229,30 @@ musicToggle.addEventListener("click", (e) => {
 
 // Try autoplay first
 window.addEventListener("load", () => {
-    bgMusic.play().catch(() => {
-        console.log("Mobile browser blocked autoplay. User can click button to play.");
-    });
+    console.log("Page loaded. Attempting autoplay...");
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {
+            console.log("Autoplay blocked - user interaction required");
+        });
+    }
 });
 
 // Start music automatically after first user interaction
 function startMusic() {
+    console.log("User interacted. Starting music...");
     if (bgMusic.paused) {
-        bgMusic.play()
-            .then(() => {
-                musicToggle.textContent = "🎵 Music ON";
-                console.log("Music started ❤️");
-            })
-            .catch(error => {
-                console.log("Could not play music:", error);
-            });
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    musicToggle.textContent = "🎵 Music ON";
+                    console.log("Music started ❤️");
+                })
+                .catch(error => {
+                    console.error("Could not play music:", error);
+                });
+        }
     }
 
     document.removeEventListener("click", startMusic);
